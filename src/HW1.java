@@ -63,13 +63,12 @@ public class HW1 {
     }
 
     //Task4 (second way)
-    public static int countPairs2(ArrayList<Integer> ls, int target) {
+    public static long countPairs2(List<Integer> ls, int target) {
         long totalCount = 0;
         for (int j : ls) {
             totalCount += ls.subList(ls.indexOf(j)+1,ls.size()).stream().filter(i -> i + j == target).count();
         }
-        System.out.println(totalCount);
-        return 0;
+        return totalCount;
     }
 
     //Task5
@@ -104,6 +103,72 @@ public class HW1 {
         return formatGuestList;
     }
 
+    //Extra task1
+    public static int nextBigger(int num) {
+        if (num < 10) {
+            return -1;
+        }
+
+        List<Integer> digits = new ArrayList<Integer>();
+        do {
+            digits.add(num % 10);
+            num /=10;
+        } while (num > 0);
+
+        int i = 0, j = 1;
+        while (digits.get(i) <= digits.get(j)) {
+            i++; j++;
+            if (j == digits.size()) {
+                return -1;
+            }
+        }
+
+        int min_pos = j-1;
+        for (int k = j-1; k >= 0; k--) {
+            if (digits.get(k) > digits.get(j) && digits.get(k) <= digits.get(min_pos)) {
+                min_pos = k;
+            }
+        }
+        Collections.swap(digits, j, min_pos);
+
+        int newNumber = 0;
+        for (int k = digits.size()-1; k >= j; k--) {
+            newNumber*=10;
+            newNumber+=digits.get(k);
+        }
+        for (int k = 0; k < j; k++) {
+            newNumber*=10;
+            newNumber+=digits.get(k);
+        }
+
+        return newNumber;
+    }
+
+    //Extra task2
+    public static String toIPv4 (long num) {
+        int[] binaries = new int[32];
+        Arrays.fill(binaries, 0);
+
+        int index = 0;
+        while (num > 0) {
+            binaries[31-index++] = (int)(num %2);
+            num/=2;
+        }
+
+        String IPv4 = "";
+        int octet, order;
+        for (int i = 3; i >= 0; i--) {
+            octet = 0;
+            order = 1;
+            for (int j = 0; j < 8; j++) {
+                octet += (order*binaries[(31-8*i) - j]);
+                order *= 2;
+            }
+            IPv4 += (octet+".");
+        }
+        return IPv4.substring(0, IPv4.length()-1);
+    }
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
@@ -133,6 +198,8 @@ public class HW1 {
         int target = 5;
         System.out.println("Initial array: " + Arrays.toString(arr));
         System.out.println("The amount of pairs: "+countPairs(arr, target));
+        ArrayList<Integer> arr2 = new ArrayList<Integer>(Arrays.asList(1,3,6,2,2,0,4,5));
+        System.out.println("The amount of pairs 2: "+countPairs2(arr2, target));
 
 
         System.out.println("\nTask 5");
@@ -140,5 +207,20 @@ public class HW1 {
         System.out.println("Initial string: " + s);
         String newS = sortByFullName(s);
         System.out.println(newS);
+
+
+        System.out.println("\nExtra Task 1");
+        System.out.println("Next bigger number for 12: " + nextBigger(12));
+        System.out.println("Next bigger number for 513: " + nextBigger(513));
+        System.out.println("Next bigger number for 2017: " + nextBigger(2017));
+        System.out.println("Next bigger number for 9: " + nextBigger(-1));
+        System.out.println("Next bigger number for 111: " + nextBigger(-1));
+        System.out.println("Next bigger number for 531: " + nextBigger(-1));
+
+
+        System.out.println("\nExtra Task 2");
+        System.out.println("IPv4 for number 2_149_583_361: "+toIPv4(2_149_583_361l));
+        System.out.println("IPv4 for number 32: "+toIPv4(32));
+        System.out.println("IPv4 for number 0: "+toIPv4(0));
     }
 }
