@@ -14,7 +14,7 @@ Used browser: Microsoft Edge Version: 96.0.1054.43
 - if you have installed Intellij IDEA, you can clone the whole content from Java_tasks branch directly
 - download selenium server and testNG to your PC
 - install browser driver (Chrome, Edge etc.) based on your browser's version
-- for Intellij users, go to File->Project Structure->Modules. Select + sign and then 1 JARs or Directories. Find your selenium server and teting jar files. Then apply
+- for Intellij users, go to File->Project Structure->Libraries. Select + sign and then 1 JARs or Directories. Find your selenium server and teting jar files. Then apply
 - choose class WebDriverConfiguration. You need to change variable **projectPath** to your own path to browser driver
 - in case you don't use Edge (I hope so), you need to change variable **driver** into **new yourBrowserDriver()**
 - run all tests
