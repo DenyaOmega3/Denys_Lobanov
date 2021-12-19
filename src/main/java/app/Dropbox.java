@@ -2,10 +2,21 @@ package app;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import io.cucumber.messages.JSON;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dropbox {
     private final String generatedKey = "HXedoogjWEoAAAAAAAAAAfWVAvlaXTgUsYb3OakT4cC_zOdb115OwteCm8wz834E";
     private Integer lastGivenStatus;
+    private String id;
+    private ArrayList<String> bodies;
+
+    public Dropbox() {
+        bodies = new ArrayList<String>();
+    }
 
     public Integer getLastGivenStatus() {
         return lastGivenStatus;
@@ -21,16 +32,25 @@ public class Dropbox {
                 .body(bodyText)
                 .asString();
         lastGivenStatus = response.getStatus();
-        response.getBody();
+        System.out.println(response.getBody());
+        bodies.add(response.getBody());
     }
 
-    public void GetFileMetadata(String id) throws
+    public void GetFileMetadata(String filename) throws
             com.mashape.unirest.http.exceptions.UnirestException {
         Unirest.setTimeouts(0, 0);
+        var json = new JSONObject();
+        for (String ls : bodies) {
+            if (ls.contains(filename)) {
+                json = new JSONObject(ls);
+            }
+        }
+        String idForThis = json.getString("id");
+        System.out.println(idForThis);
         HttpResponse<String> response = Unirest.post("https://api.dropboxapi.com/2/sharing/get_file_metadata")
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer "+generatedKey)
-                .body("{\r\n    \"file\": \"id:"+id+"\",\r\n    \"actions\": []\r\n}")
+                .body("{\r\n    \"file\": \""+idForThis+"\",\r\n    \"actions\": []\r\n}")
                 .asString();
         lastGivenStatus = response.getStatus();
         System.out.println(lastGivenStatus);

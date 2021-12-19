@@ -13,7 +13,7 @@ Feature: Dropbox functions
     Then the content of file has to be returned
     Examples:
       | id |
-    |Bg3-Yad34p8AAAAAAAAAHw|
+    |test|
 
   Scenario Outline: User can delete file
     Given User's dropbox
