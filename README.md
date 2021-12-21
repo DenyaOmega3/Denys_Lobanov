@@ -18,5 +18,3 @@ Used dependencies:
 - now go to project in IDEA and find Dropbox class. You need to insert your access key into variable **generatedKey**
 - select Test class, manage some examples and test them
 <br>
-
-**Note**: Unfortunately, I didn't manage to solve one particular problem. Therefore, in order to start test for *GetFileMetadata()* method you need to get id of your inserted file using .getBody()
